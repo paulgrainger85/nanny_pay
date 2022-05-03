@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  postgres:
+    image: 'postgres:14.1'
+    ports:
+      - 15001:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: mypassword123
+      POSTGRES_DB: default
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
