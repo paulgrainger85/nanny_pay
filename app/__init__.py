@@ -1,8 +1,12 @@
+from crypt import methods
 import sys
-from flask import Flask
+from flask import Flask, render_template, request
+import datetime as dt
+
 
 sys.path.append("/home/paul/git/nanny_pay/app")
 
+from calc.timesheets import update_hours
 
 def create_app(test_config=None):
     # create and configure the app
@@ -28,8 +32,33 @@ def create_app(test_config=None):
     db.init_app(app)
 
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/timesheets')
+    def enter_timesheets():
+        today = dt.date.today()
+        start_of_week = today - dt.timedelta(days=today.isoweekday() - 1)
+        this_week = [start_of_week + dt.timedelta(days=i) for i in range(7)]
+        days_of_week = ['Monday','Tuesday','Wednesday',
+            'Thursday','Friday','Saturday','Sunday']
+
+        date_dict = dict(zip(days_of_week, this_week))
+        employees = db.session.execute("select id, name from employee")
+
+        return render_template(
+            'timesheets.html',
+            employees=[e for e in employees],
+            **date_dict
+            )
+
+    @app.route('/enter-timesheets', methods=["POST", "GET"])
+    def data():
+        form = request.form
+        # return form
+        dateHours = {}
+        for str_dt, hours in form.items():
+            if not str_dt == 'employee':
+                if not hours == '':
+                    dateHours[dt.date.fromisoformat(str_dt)] = float(hours)
+        update_hours(form['employee'], dateHours)
+        return form
 
     return app

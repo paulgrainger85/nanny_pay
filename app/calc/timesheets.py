@@ -33,4 +33,3 @@ def get_timesheets(employee_id: int, date):
         [r.get('id'), r.get('date'), r.get('hours'), r.get('updateTS')]
         for r in rows
     ]
-

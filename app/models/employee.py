@@ -9,10 +9,13 @@ class Employee(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    state = Column(String)
+    address = Column(String)
     ssn = Column(String)
     hire_date = Column(Date)
     filing_status = Column(String)
     wage = Column(Float)
+    sick_leave_rate = Column(Float)
     active = Column(Boolean)
     update_ts = Column(DateTime)
 
@@ -45,4 +48,21 @@ class Payroll(Base):
     date = Column(Date, primary_key=True)
     update_ts = Column(DateTime)
     gross_pay = Column(Float)
-    income_tax = Float(Float)
+    net_pay = Column(Float)
+    income_tax = Column(Float)
+    medicare = Column(Float)
+    social_security = Column(Float)
+    state_taxes = Column(JSON)
+    employer_medicare = Column(Float)
+    employer_social_security = Column(Float)
+    employer_unemployment = Column(Float)
+    employer_state_taxes = Column(JSON)
+
+
+class SickLeave(Base):
+    __tablename__ = 'sick_leave'
+    __table_args__ = {'extend_existing': True}
+
+    date = Column(Date, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    accrued_leave = Column(Float)

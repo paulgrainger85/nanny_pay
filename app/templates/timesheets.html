@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Timesheets{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <form action="/enter-timesheets" method="POST">
+    Employee <SELECT name="employee">
+        {% for c in employees %}
+            <OPTION value={{c.id}}>{{c.name}}</option>
+        {% endfor %}
+        </SELECT>
+    
+      <p>Monday - {{Monday}}<input type="float" name = {{ Monday }}></p>
+      <p>Tuesday - {{Tuesday}}<input type="float" name = {{ Tuesday }}></p>
+      <p>Wednesday - {{Wednesday}}<input type="float" name = {{ Wednesday }}></p>
+      <p>Thursday - {{Thursday}}<input type="float" name = {{ Thursday }}></p>
+      <p>Friday - {{Friday}}<input type="float" name = {{ Friday }}></p>
+      <p>Saturday - {{Saturday}}<input type="float" name = {{ Saturday }}></p>
+      <p>Sunday - {{Sunday}}<input type="float" name = {{ Sunday }}></p>
+      <p><input type = "submit" value = "Submit"></p>
+  </form>
+{% endblock %}
