@@ -11,7 +11,7 @@ def update_hours(employee_id: int, hours: Dict):
     for date, hours_worked in hours.items():
         row = {
             'id': employee_id,
-            'updateTS': current_time,
+            'update_ts': current_time,
             'date': date,
             'hours': hours_worked,
         }
@@ -31,6 +31,6 @@ def get_timesheets(employee_id: int, date):
         query = query.filter(Timesheets.date==date) # noqa
     rows = [row.__dict__ for row in query]
     return [
-        [r.get('id'), r.get('date'), r.get('hours'), r.get('updateTS')]
+        [r.get('id'), r.get('date'), r.get('hours'), r.get('update_ts')]
         for r in rows
     ]

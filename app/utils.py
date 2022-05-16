@@ -1,6 +1,6 @@
 from app import db
 
-from sqlalchemy import insert
+from sqlalchemy.dialects.postgresql import insert
 
 
 def upsert(table, data, index_elements):
