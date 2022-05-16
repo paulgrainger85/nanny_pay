@@ -1,4 +1,4 @@
-from calc.employee import calc_employee_tax
+from employee import calc_employee_tax
 
 
 class Payslip:

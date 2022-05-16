@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Payroll{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <form action="/run-payroll" method="POST">
+    Employee <SELECT name="employee">
+        {% for c in employees %}
+            <OPTION value={{c.id}}>{{c.name}}</option>
+        {% endfor %}
+        </SELECT>
+    
+      <p>Date<input type="date" name = {{ pay_date }}></p>
+      <p><input type = "submit" value = "Submit"></p>
+  </form>
+{% endblock %}

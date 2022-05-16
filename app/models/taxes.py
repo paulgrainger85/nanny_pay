@@ -1,39 +1,40 @@
-from xmlrpc.client import Boolean
-from sqlalchemy import Column, Integer, String, Float, BOOLEAN
-from models.base import Base
+from app import app, db
 
 
-class FederalTaxes(Base):
+class FederalTaxes(db.Model):
     __tablename__ = 'federal_taxes'
+    __table_args__ = {'extend_existing': True}
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    year = Column(String, nullable=False)
-    tax_type = Column(String, nullable=False)
-    tax_rate = Column(Float, nullable=False)
-    tax_threshold = Column(Integer)
-    filing_status = Column(String)
-    annual_limit = Column(Integer)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    year = db.Column(db.String, nullable=False)
+    tax_type = db.Column(db.String, nullable=False)
+    tax_rate = db.Column(db.Float, nullable=False)
+    tax_threshold = db.Column(db.Integer)
+    filing_status = db.Column(db.String)
+    annual_limit = db.Column(db.Integer)
 
 
-class StateTaxes(Base):
+class StateTaxes(db.Model):
     __tablename__ = 'state_taxes'
+    __table_args__ = {'extend_existing': True}
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    state = Column(String, nullable=False)
-    year = Column(String, nullable=False)
-    tax_type = Column(String, nullable=False)
-    tax_rate = Column(Float, nullable=False)
-    tax_threshold = Column(Integer)
-    filing_status = Column(String)
-    annual_limit = Column(Integer)
-    use_deduction = Column(BOOLEAN)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    state = db.Column(db.String, nullable=False)
+    year = db.Column(db.String, nullable=False)
+    tax_type = db.Column(db.String, nullable=False)
+    tax_rate = db.Column(db.Float, nullable=False)
+    tax_threshold = db.Column(db.Integer)
+    filing_status = db.Column(db.String)
+    annual_limit = db.Column(db.Integer)
+    use_deduction = db.Column(db.BOOLEAN)
 
 
-class StandardDeduction(Base):
+class StandardDeduction(db.Model):
     __tablename__ = 'standard_deduction'
+    __table_args__ = {'extend_existing': True}
 
-    id = Column(Integer, primary_key=True)
-    year = Column(String, nullable=False)
-    state = Column(String, nullable=False)
-    filing_status = Column(String, nullable=False)
-    deduction = Column(Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    year = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
+    filing_status = db.Column(db.String, nullable=False)
+    deduction = db.Column(db.Integer, nullable=False)

@@ -1,10 +1,11 @@
 import json
 import datetime as dt
 
-from db import session, upsert
+from app import db
+from app.utils import upsert
 from models.employee import Payroll, SickLeave, Timesheets
-from calc.tax import calc_tax
-from calc.employee import get_employee_config
+from tax import calc_tax
+from employee import get_employee_config
 
 
 def get_days_in_week(day):
@@ -18,7 +19,7 @@ def get_days_in_week(day):
 def run_payroll(id, pay_date):
     dates = get_days_in_week(pay_date)
 
-    timesheet_query = session.query(
+    timesheet_query = db.session.query(
         Timesheets).filter(
             Timesheets.id==id # noqa
         ).filter(
@@ -74,3 +75,22 @@ def run_payroll(id, pay_date):
         },
         [SickLeave.date, SickLeave.id]
     )
+
+
+def get_payroll(id, start_date, end_date):
+    query = db.session.query(Payroll).filter(
+        Payroll.id==id # noqa
+        ).filter(
+            Payroll.date.between(start_date, end_date)
+    )
+
+    result = []
+
+    for row in query:
+        d = row.__dict__
+        d.pop('_sa_instance_state')
+        state_taxes = json.loads(d.pop('state_taxes'))
+        d.update(state_taxes)
+        result.append(d)
+
+    return result

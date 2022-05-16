@@ -1,12 +1,13 @@
 import datetime as dt
 from sqlalchemy import func
 
-from db import session, upsert
+from app import db
+from app.utils import upsert
 from models.employee import Employee, SickLeave
 
 
 def get_employee_config(id, include_sensitive=False):
-    employee = session.query(Employee).filter(
+    employee = db.session.query(Employee).filter(
         Employee.id==id # noqa
     )
     for row in employee:
@@ -15,7 +16,7 @@ def get_employee_config(id, include_sensitive=False):
         if not include_sensitive:
             config.pop('ssn')
 
-    sick_leave = session.query(func.sum(SickLeave.accrued_leave)).filter(
+    sick_leave = db.session.query(func.sum(SickLeave.accrued_leave)).filter(
         SickLeave.id==id # noqa
     ).scalar()
 
@@ -24,7 +25,7 @@ def get_employee_config(id, include_sensitive=False):
 
 
 def add_new_employee(**kwargs):
-    qry = session.query("select max(id) as id from employee")
+    qry = db.session.query("select max(id) as id from employee")
     for row in qry:
         eid = 1 + row.__dict__['id']
 
@@ -37,4 +38,3 @@ def add_new_employee(**kwargs):
     upsert(Employee, new_employee, [Employee.id])
 
     return new_employee
-

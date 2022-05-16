@@ -4,9 +4,7 @@ from flask.cli import with_appcontext
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from sqlalchemy.dialects.postgresql import insert
 
-from models.base import Base
 import models.employee
 import models.taxes # noqa
 
@@ -20,30 +18,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def init_db():
-    Base.metadata.create_all(engine)
-
-
-def upsert(table, data, index_elements):
-
-    stmt = insert(table).values(data)
-    stmt = stmt.on_conflict_do_update(
-        index_elements=index_elements,
-        set_=data,
-    )
-    session.execute(stmt)
-    session.commit()
-
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    init_db()
-    click.echo("Initialized the database")
-
-
 def init_app(app):
-    app.cli.add_command(init_db_command)
     app.cli.add_command(load_data_command)
     app.cli.add_command(test_print)
     app.cli.add_command(load_state_tax_data_command)

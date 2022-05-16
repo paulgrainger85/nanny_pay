@@ -1,8 +1,9 @@
 import datetime as dt
 from typing import Dict
 
-from db import upsert, session
-from models.employee import Timesheets, Employee
+from app import db
+from app.utils import upsert
+from models.employee import Timesheets
 
 
 def update_hours(employee_id: int, hours: Dict):
@@ -23,7 +24,7 @@ def get_timesheets(employee_id: int, date):
         employee_id(int): numerical identifier
         date(date or list): single date to retrieve or tuple of dates
     """
-    query = session.query(Timesheets).filter(Timesheets.id==employee_id) # noqa
+    query = db.session.query(Timesheets).filter(Timesheets.id==employee_id) # noqa
     if type(date) is list:
         query = query.filter(Timesheets.date.between(date[0], date[1]))
     else:

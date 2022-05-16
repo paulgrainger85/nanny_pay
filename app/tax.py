@@ -1,10 +1,10 @@
-from db import session
+from app import db
 from models.taxes import FederalTaxes, StandardDeduction, StateTaxes
 
 
 def get_taxes(tax, filing_status='Single'):
     taxes = []
-    tax_config = session.query(
+    tax_config = db.session.query(
         FederalTaxes).filter(
             FederalTaxes.tax_type==tax # noqa
         ).filter(
@@ -25,7 +25,7 @@ def get_taxes(tax, filing_status='Single'):
 
 def get_state_taxes(state, year, filing_status='Single'):
     taxes = {}
-    tax_config = session.query(
+    tax_config = db.session.query(
         StateTaxes).filter(
             StateTaxes.state==state # noqa
         ).filter(
@@ -51,7 +51,7 @@ def get_state_taxes(state, year, filing_status='Single'):
 
 
 def get_standard_deduction(status, tax_year, state):
-    data = session.query(StandardDeduction).filter(
+    data = db.session.query(StandardDeduction).filter(
         StandardDeduction.filing_status==status # noqa
     ).filter(
         StandardDeduction.year==tax_year # noqa
